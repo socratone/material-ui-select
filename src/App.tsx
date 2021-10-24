@@ -23,6 +23,7 @@ function App() {
         options={options}
         placeholder="값을 선택하세요"
         width={300}
+        name="number"
       />
     </Container>
   );

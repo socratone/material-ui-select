@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -9,6 +8,7 @@ type CustomSelectProps = {
   value: any;
   onChange: (event: React.ChangeEvent<{ value: any }>) => void;
   options: { id: number; name: string }[];
+  name?: string;
   placeholder?: string;
   width?: number;
 };
@@ -17,6 +17,7 @@ const CustomSelect = ({
   value,
   onChange,
   options,
+  name,
   placeholder,
   width = 100,
 }: CustomSelectProps) => {
@@ -33,15 +34,18 @@ const CustomSelect = ({
         <StyledSelect
           value={value}
           onChange={onChange}
+          name={name}
           variant="outlined"
           displayEmpty
           renderValue={(value: any) => {
             if (!value) {
               return (
-                <Placeholder>{placeholder ? placeholder : ''}</Placeholder>
+                <PlaceholderText>
+                  {placeholder ? placeholder : ''}
+                </PlaceholderText>
               );
             }
-            return <div>{setName(value)}</div>;
+            return <SelectedText>{setName(value)}</SelectedText>;
           }}
           MenuProps={{
             getContentAnchorEl: null,
@@ -70,9 +74,11 @@ const CustomSelect = ({
 
 const Container = styled.div``;
 
-const Placeholder = styled.div`
+const PlaceholderText = styled.div`
   color: grey;
 `;
+
+const SelectedText = styled.div``;
 
 const StyledSelect = styled(Select)`
   background: #fcfcfc;
