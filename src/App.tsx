@@ -1,12 +1,12 @@
+import { MenuItem } from '@material-ui/core';
 import { useState } from 'react';
 import styled from 'styled-components';
 import CustomSelect from './components/CustomSelect';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { unstable_createMuiStrictModeTheme } from '@material-ui/core/styles';
 
-const options = [
-  { id: 1, name: '하나' },
-  { id: 2, name: '둘' },
-  { id: 3, name: '셋' },
-];
+// 'findDOMNode is deprecated in StrictMode' warning 제거를 위한 theme
+const theme = unstable_createMuiStrictModeTheme();
 
 function App() {
   const [value, setValue] = useState<number | ''>('');
@@ -16,16 +16,30 @@ function App() {
   };
 
   return (
-    <Container>
-      <CustomSelect
-        value={value}
-        onChange={handleChange}
-        options={options}
-        placeholder="값을 선택하세요"
-        width={300}
-        name="number"
-      />
-    </Container>
+    <ThemeProvider theme={theme}>
+      <Container>
+        <CustomSelect
+          value={value}
+          onChange={handleChange}
+          placeholder="값을 선택하세요"
+          width={300}
+          name="number"
+        >
+          <MenuItem value="" disableRipple>
+            없음
+          </MenuItem>
+          <MenuItem value={1} disableRipple>
+            하나
+          </MenuItem>
+          <MenuItem value={2} disableRipple>
+            둘
+          </MenuItem>
+          <MenuItem value={3} disableRipple disabled>
+            셋
+          </MenuItem>
+        </CustomSelect>
+      </Container>
+    </ThemeProvider>
   );
 }
 

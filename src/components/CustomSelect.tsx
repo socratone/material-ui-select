@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 type CustomSelectProps = {
   value: any;
   onChange: (event: React.ChangeEvent<{ value: any }>) => void;
-  options: { id: number; name: string }[];
+  children: React.ReactElement[];
   name?: string;
   placeholder?: string;
   width?: number;
@@ -16,7 +15,7 @@ type CustomSelectProps = {
 const CustomSelect = ({
   value,
   onChange,
-  options,
+  children,
   name,
   placeholder,
   width = 100,
@@ -24,8 +23,10 @@ const CustomSelect = ({
   const classes = useStyles();
 
   const setName = (value: number) => {
-    const option = options.find((option) => option.id === value);
-    return option ? option.name : '';
+    const element = children.find(
+      (element) => Number(element.props.value) === value
+    );
+    return element ? element.props.children : '';
   };
 
   return (
@@ -58,14 +59,7 @@ const CustomSelect = ({
             },
           }}
         >
-          <MenuItem value="" disableRipple>
-            없음
-          </MenuItem>
-          {options.map((option) => (
-            <MenuItem key={option.id} value={option.id} disableRipple>
-              {option.name}
-            </MenuItem>
-          ))}
+          {children}
         </StyledSelect>
       </FormControl>
     </Container>
