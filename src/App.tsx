@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import styled from 'styled-components';
+import CustomSelect from './components/CustomSelect';
+
+const options = [
+  { id: 1, name: '하나' },
+  { id: 2, name: '둘' },
+  { id: 3, name: '셋' },
+];
 
 function App() {
+  const [value, setValue] = useState<number | ''>('');
+
+  const handleChange = (event: React.ChangeEvent<{ value: number | '' }>) => {
+    setValue(event.target.value);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <CustomSelect
+        value={value}
+        onChange={handleChange}
+        options={options}
+        placeholder="값을 선택하세요"
+        width={300}
+      />
+    </Container>
   );
 }
+
+const Container = styled.div`
+  padding: 20px;
+  height: 100vh;
+
+  & > * {
+    margin-bottom: 10px;
+  }
+`;
 
 export default App;
