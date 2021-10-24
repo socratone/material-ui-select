@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import { makeStyles } from '@material-ui/core/styles';
 
 type CustomSelectProps = {
   value: any;
@@ -19,6 +20,8 @@ const CustomSelect = ({
   placeholder,
   width = 100,
 }: CustomSelectProps) => {
+  const classes = useStyles();
+
   const setName = (value: number) => {
     const option = options.find((option) => option.id === value);
     return option ? option.name : '';
@@ -27,7 +30,7 @@ const CustomSelect = ({
   return (
     <Container style={{ width: width + 'px' }}>
       <FormControl fullWidth>
-        <Select
+        <StyledSelect
           value={value}
           onChange={onChange}
           variant="outlined"
@@ -40,14 +43,26 @@ const CustomSelect = ({
             }
             return <div>{setName(value)}</div>;
           }}
+          MenuProps={{
+            getContentAnchorEl: null,
+            anchorOrigin: {
+              vertical: 'bottom',
+              horizontal: 'left',
+            },
+            classes: {
+              paper: classes.menuPaper,
+            },
+          }}
         >
-          <MenuItem value="">없음</MenuItem>
+          <MenuItem value="" disableRipple>
+            없음
+          </MenuItem>
           {options.map((option) => (
-            <MenuItem key={option.id} value={option.id}>
+            <MenuItem key={option.id} value={option.id} disableRipple>
               {option.name}
             </MenuItem>
           ))}
-        </Select>
+        </StyledSelect>
       </FormControl>
     </Container>
   );
@@ -58,5 +73,55 @@ const Container = styled.div``;
 const Placeholder = styled.div`
   color: grey;
 `;
+
+const StyledSelect = styled(Select)`
+  background: #fcfcfc;
+  overflow: hidden;
+
+  & .MuiSvgIcon-root {
+    /* right: 25px; */
+    fill: #c1c1c1;
+  }
+
+  .MuiSelect-select:focus {
+    background-color: #fcfcfc;
+  }
+
+  // border
+  &.MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+    border-color: #e2e2e2;
+  }
+
+  // focus border
+  &.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    border-color: #e2e2e2;
+    border-width: 1px;
+  }
+
+  // hover border
+  &.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+    border-color: #e2e2e2;
+  }
+
+  &.MuiInputBase-root {
+    border-radius: 10px;
+  }
+
+  & .MuiSelect-root {
+    height: 46px;
+    padding-top: 0;
+    padding-bottom: 0;
+    display: flex;
+    align-items: center;
+  }
+`;
+
+const useStyles = makeStyles({
+  menuPaper: {
+    background: '#fff',
+    boxShadow: '0px 0px 20px rgba(0, 0, 0, 0.1)',
+    borderRadius: '10px',
+  },
+});
 
 export default CustomSelect;
